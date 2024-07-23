@@ -1,0 +1,63 @@
+import requests
+import json
+
+def initiate_mpesa_payment(amount, phone_number):
+    """Initiates an M-Pesa payment using the Daraja API.
+
+    Args:
+        amount (float): The amount to be paid.
+        phone_number (str): The recipient's phone number.
+
+    Returns:
+        dict: The API response.
+    """
+
+    # Replace with your credentials
+    consumer_key = 'YOUR_CONSUMER_KEY'
+    consumer_secret = 'YOUR_CONSUMER_SECRET'
+    access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate-token'
+
+    # Get an access token
+    auth = f"{consumer_key}:{consumer_secret}"
+    headers = {"Authorization": "Basic " + auth}
+    response = requests.get(access_token_url, headers=headers)
+    access_token = json.loads(response.text)['access_token']
+
+    # M-Pesa payment request endpoint
+    api_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+
+    # Replace with your Lipa Na M-Pesa Online credentials
+    business_short_code = 'YOUR_BUSINESS_SHORT_CODE'
+    lipa_na_mpesa_password = 'YOUR_LIPA_NA_MPESA_PASSWORD'
+    callback_url = 'https://yourdomain.com/callback'
+
+    # Payment details
+    timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    transaction_ref = 'test_' + str(random.randint(1, 999999))
+    amount = str(amount)
+    phone_number = phone_number
+
+    # Build the request body
+    request_body = {
+        "BusinessShortCode": business_short_code,
+        "Password": lipa_na_mpesa_password,
+        "Timestamp": timestamp,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": amount,
+        "PartyA": phone_number,
+        "PartyB": business_short_code,
+        "PhoneNumber": phone_number,
+        "CallBackURL": callback_url,
+        "AccountReference": "Test",
+        "TransactionDesc": "Test Payment"
+    }
+
+    headers = {"Authorization": "Bearer " + access_token, "Content-Type": "application/json"}
+    response = requests.post(api_url, json=request_body, headers=headers)
+    return response.json()
+
+# Example usage
+amount = 100
+phone_number = '0742156541'
+response = initiate_mpesa_payment(amount, phone_number)
+print(response)
