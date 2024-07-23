@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <map>
+
+// Replace with actual M-Pesa API integration
+bool processMpesaPayment(const std::string& callbackData) {
+    // Parse callback data
+    std::map<std::string, std::string> params;
+    // ... parsing logic ...
+
+    // Validate transaction
+    if (!validateTransaction(params)) {
+        return false;
+    }
+
+    // Process payment
+    if (!updateDatabase(params)) {
+        return false;
+    }
+
+    // Send confirmation (optional)
+    sendConfirmation(params);
+
+    return true;
+}
+
+int main() {
+    std::string callbackData = "{/* Sample callback data */}";
+    if (processMpesaPayment(callbackData)) {
+        std::cout << "Payment processed successfully" << std::endl;
+    } else {
+        std::cout << "Payment processing failed" << std::endl;
+    }
+    return 0;
+}
