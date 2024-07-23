@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string cardNumber, expirationDate, cvv;
+
+    cout << "Enter card number: ";
+    cin >> cardNumber;
+
+    cout << "Enter expiration date (MM/YY): ";
+    cin >> expirationDate;
+
+    cout << "Enter CVV: ";
+    cin >> cvv;
+
+    // You would typically validate this information here
+    // and send it to a payment gateway for processing
+
+    cout << "Payment information entered:\n";
+    cout << "Card number: " << cardNumber << endl;
+    cout << "Expiration date: " << expirationDate << endl;
+    cout << "CVV: " << cvv << endl;
+
+    return 0;
+}
